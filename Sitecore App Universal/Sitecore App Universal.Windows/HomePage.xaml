@@ -10,7 +10,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel x:Name="SP_SiteURL" Orientation="Horizontal" Visibility="Visible"  HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36">Enter Sitecore Site URL:</TextBlock>
-            <TextBox Name="txtSitecoreSiteURL" Height="25" Width="500"></TextBox>
+            <TextBox Name="txtSitecoreSiteURL" Height="25" Width="500" KeyDown="txtSitecoreSiteURL_KeyDown"/>
             <AppBarButton Name="btnGo" Icon="Go" Label="Go" Click="SiteURLGo_Click"/>
         </StackPanel>
         <StackPanel x:Name="SP_ProgressRing" Visibility="Collapsed" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">

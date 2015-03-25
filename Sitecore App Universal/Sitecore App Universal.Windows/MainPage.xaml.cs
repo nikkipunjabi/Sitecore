@@ -53,6 +53,7 @@ namespace Sitecore_App_Universal
             TreeItems = new Authentication().ParseSitecoreTree(mySearchItems);
 
             TreeViewControl.ItemsSource = TreeItems;
+            SVContentTree.MaxHeight = Window.Current.Bounds.Height;
             //GetHttpResponse(); 
         }
 

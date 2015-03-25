@@ -57,5 +57,13 @@ namespace Sitecore_App_Universal
             SP_SiteURL.Visibility = !visible ? Visibility.Visible:Visibility.Collapsed;
         }
 
+        private void txtSitecoreSiteURL_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                SiteURLGo_Click(sender, e);
+            }
+        }
+
     }
 }
