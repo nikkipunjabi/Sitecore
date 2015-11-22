@@ -1,6 +1,5 @@
 **Sitecore App**
 -
-About:
 It's an Windows Store App which list the Sitecore Content Tree. It's created with Windows Store Universal Project.
 
 
