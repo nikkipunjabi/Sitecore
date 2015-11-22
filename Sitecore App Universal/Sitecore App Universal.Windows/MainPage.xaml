@@ -50,8 +50,13 @@
                     <ColumnDefinition Width="213*"/>
                     <ColumnDefinition Width="230*"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Margin="0,10,0,0" Grid.Row="1" x:Name="FieldNamePanel" Grid.Column="0"></StackPanel>
-                <StackPanel Margin="0,10,0,0" Grid.Row="1" x:Name="FieldValuePanel" Grid.Column="1"></StackPanel>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Margin="0,10,0,0" Grid.Row="0" x:Name="FieldNamePanel" Grid.Column="0"></StackPanel>
+                <StackPanel Margin="0,10,0,0" Grid.Row="0" x:Name="FieldValuePanel" Grid.Column="1"></StackPanel>
+                <AppBarButton x:Name="Save" Margin="0,10,0,0" Grid.Row="1" Icon="Save" Content="Save" Click="Save_Click"></AppBarButton>
             </Grid>
 
         </Grid>

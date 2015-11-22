@@ -64,72 +64,82 @@ namespace Sitecore_App_Universal.Account
 
                 foreach (var item in SitecoreSite)
                 {
-                    SitecoreContentTree myitem = new SitecoreContentTree();
-                    var currentitem = item.GetObject();
-
-                    myitem.SitecoreItem = currentitem.GetNamedValue("DisplayName").GetString();
-                    myitem.SitecoreItemId = currentitem.GetNamedValue("ID").GetString();
-
-                    if (currentitem.GetNamedValue("Fields").GetObject().Count > 0)
+                    try
                     {
-                        foreach (var fields in currentitem.GetNamedValue("Fields").GetObject())
+                        SitecoreContentTree myitem = new SitecoreContentTree();
+                        var currentitem = item.GetObject();
+
+                        myitem.SitecoreItem = currentitem.GetNamedValue("DisplayName").GetString();
+                        myitem.SitecoreItemId = currentitem.GetNamedValue("ID").GetString();
+
+                        if (currentitem.GetNamedValue("Fields").GetObject().Count > 0)
                         {
-                            var _fieldText = fields.Value.GetObject().GetNamedValue("Name").GetString();
-                            var _fieldValue = fields.Value.GetObject().GetNamedValue("Value").GetString();
+                            foreach (var fields in currentitem.GetNamedValue("Fields").GetObject())
+                            {
+                                var _fieldText = fields.Value.GetObject().GetNamedValue("Name").GetString();
+                                var _fieldValue = fields.Value.GetObject().GetNamedValue("Value").GetString();
 
-                            //Fill Fields
-                            myitem._hasFields = true;
+                                //Fill Fields
+                                myitem._hasFields = true;
 
-                            myitem.ItemField.Add(_fieldText, _fieldValue);
+                                myitem.ItemField.Add(_fieldText, _fieldValue);
 
+                            }
                         }
-                    }
 
 
-                    if (currentitem.GetNamedValue("HasChildren").GetBoolean())
-                    {
-                        myitem.HasChildrens = true;
-                        var parentitemid = currentitem.GetNamedValue("ID").GetString();
-
-                        using (var client = new HttpClient())
+                        if (currentitem.GetNamedValue("HasChildren").GetBoolean())
                         {
-                            var request = new HttpRequestMessage
+                            myitem.HasChildrens = true;
+                            var parentitemid = currentitem.GetNamedValue("ID").GetString();
+
+                            using (var client = new HttpClient())
                             {
-                                RequestUri = new Uri("http://" + SiteURL + "/-/item/v1/?scope=c&sc_database=master&sc_itemid=" + parentitemid),
-                                Method = HttpMethod.Get
-                            };
+                                var request = new HttpRequestMessage
+                                {
+                                    RequestUri = new Uri("http://" + SiteURL + "/-/item/v1/?scope=c&sc_database=master&sc_itemid=" + parentitemid),
+                                    Method = HttpMethod.Get
+                                };
 
-                            request.Headers.Add("X-Scitemwebapi-Username", @"sitecore\admin");
-                            request.Headers.Add("X-Scitemwebapi-Password", "b");
+                                request.Headers.Add("X-Scitemwebapi-Username", @"sitecore\admin");
+                                request.Headers.Add("X-Scitemwebapi-Password", "b");
 
-                            var response = client.SendAsync(request).Result;
-                            if (response.IsSuccessStatusCode)
-                            {
-                                //var responseString = await response.Content.ReadAsStringAsync();
+                                var response = client.SendAsync(request).Result;
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    //var responseString = await response.Content.ReadAsStringAsync();
 
-                                var jsonString = response.Content.ReadAsStringAsync();
-                                JsonObject root = Windows.Data.Json.JsonValue.Parse(jsonString.Result).GetObject();
-                                JsonObject SearchItems = root.GetNamedObject("result");
-                                JsonArray mySearchItems = SearchItems.GetNamedArray("items");
-                                myitem.Childrens = ParseSitecoreTree(mySearchItems);
+                                    var jsonString = response.Content.ReadAsStringAsync();
+                                    JsonObject root = Windows.Data.Json.JsonValue.Parse(jsonString.Result).GetObject();
+                                    if (root.ContainsKey("result"))
+                                    {
+                                        JsonObject SearchItems = root.GetNamedObject("result");
+                                        JsonArray mySearchItems = SearchItems.GetNamedArray("items");
+                                        myitem.Childrens = ParseSitecoreTree(mySearchItems);
+                                    }
+                                }
+
+
                             }
 
+                            ////var response = client.GetAsync("http://sitecoreforsearch/-/item/v1/?scope=c&sc_database=master&sc_itemid=" + parentitemid).Result;
+                            //var jsonString = response.Content.ReadAsStringAsync();
+                            //JsonObject root = Windows.Data.Json.JsonValue.Parse(jsonString.Result).GetObject();
+                            //JsonObject SearchItems = root.GetNamedObject("result");
+                            //JsonArray mySearchItems = SearchItems.GetNamedArray("items");
+                            //myitem.Childrens = ParseSitecoreTree(mySearchItems);
 
                         }
-
-                        ////var response = client.GetAsync("http://sitecoreforsearch/-/item/v1/?scope=c&sc_database=master&sc_itemid=" + parentitemid).Result;
-                        //var jsonString = response.Content.ReadAsStringAsync();
-                        //JsonObject root = Windows.Data.Json.JsonValue.Parse(jsonString.Result).GetObject();
-                        //JsonObject SearchItems = root.GetNamedObject("result");
-                        //JsonArray mySearchItems = SearchItems.GetNamedArray("items");
-                        //myitem.Childrens = ParseSitecoreTree(mySearchItems);
-
+                        else
+                        {
+                            myitem.HasChildrens = false;
+                        }
+                        tree.Add(myitem);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        myitem.HasChildrens = false;
+                        //Log Error
                     }
-                    tree.Add(myitem);
                 }
                 return tree;
             }

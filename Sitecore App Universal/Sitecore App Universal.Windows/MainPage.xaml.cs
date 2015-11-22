@@ -46,14 +46,17 @@ namespace Sitecore_App_Universal
             JsonObject root = Windows.Data.Json.JsonValue.Parse(jsonString).GetObject();
 
             //Get Json Result
-            JsonObject SearchItems = root.GetNamedObject("result");
-            //Get All Item Arrays
-            JsonArray mySearchItems = SearchItems.GetNamedArray("items");
+            if (root.ContainsKey("result"))
+            {
+                JsonObject SearchItems = root.GetNamedObject("result");
+                //Get All Item Arrays
+                JsonArray mySearchItems = SearchItems.GetNamedArray("items");
 
-            TreeItems = new Authentication().ParseSitecoreTree(mySearchItems);
+                TreeItems = new Authentication().ParseSitecoreTree(mySearchItems);
 
-            TreeViewControl.ItemsSource = TreeItems;
-            SVContentTree.MaxHeight = Window.Current.Bounds.Height;
+                TreeViewControl.ItemsSource = TreeItems;
+                SVContentTree.MaxHeight = Window.Current.Bounds.Height - 5;
+            }
             //GetHttpResponse(); 
         }
 
@@ -68,7 +71,7 @@ namespace Sitecore_App_Universal
                 fieldtitle.Height = 20;
                 fieldtitle.IsEnabled = false;
                 TextBox fieldvalue = new TextBox(); fieldvalue.Foreground = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 0, 0));
-                fieldtitle.Text =  item.Key;
+                fieldtitle.Text = item.Key;
                 fieldvalue.Text = item.Value;
                 FieldNamePanel.Children.Add(fieldtitle);
                 FieldValuePanel.Children.Add(fieldvalue);
@@ -95,7 +98,18 @@ namespace Sitecore_App_Universal
                 //MyGrid.Children.Add(fieldvalue);
 
                 //FieldsGrid.Children.Add(MyGrid);
-               
+            }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            if (TreeViewControl.SelectedItem != null && TreeViewControl.SelectedValue != null)
+            {
+                SitecoreContentTree contentTreeSelectedItem = TreeViewControl.SelectedItem as SitecoreContentTree;
+                foreach(var itemFields in FieldValuePanel.Children)
+                {
+                    
+                }
             }
         }
 
