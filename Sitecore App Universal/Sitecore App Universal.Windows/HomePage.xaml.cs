@@ -35,11 +35,13 @@ namespace Sitecore_App_Universal
         {
             ProggressBarVisible(true);
             SP_SiteURL.Visibility = Visibility.Collapsed;
+            SP_Sitepasswd.Visibility = Visibility.Collapsed;
+            SP_SiteUserName.Visibility = Visibility.Collapsed;
             SP_ProgressRing.Visibility = Visibility.Visible;
             if (txtSitecoreSiteURL != null && !string.IsNullOrWhiteSpace(txtSitecoreSiteURL.Text))
             {
                 Authentication auth = new Authentication();
-                var response = await auth.GetHttpResponse(txtSitecoreSiteURL.Text);
+                var response = await auth.GetHttpResponse(txtSitecoreSiteURL.Text, txtUserName.Text, txtPassword.Password.ToString());
                 var checkResponse = response;
             
                if (response.IsSuccessStatusCode)
@@ -49,21 +51,28 @@ namespace Sitecore_App_Universal
             }
             SP_ProgressRing.Visibility = Visibility.Collapsed;
             SP_SiteURL.Visibility = Visibility.Visible;
+            SP_Sitepasswd.Visibility = Visibility.Visible;
+            SP_SiteUserName.Visibility = Visibility.Visible;
         }
 
         private void ProggressBarVisible(bool visible)
         {
             SP_ProgressRing.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
             SP_SiteURL.Visibility = !visible ? Visibility.Visible:Visibility.Collapsed;
+            SP_SiteUserName.Visibility = !visible ? Visibility.Visible : Visibility.Collapsed;
+            SP_Sitepasswd.Visibility = !visible ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void txtSitecoreSiteURL_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                SiteURLGo_Click(sender, e);
-            }
+            //if (e.Key == Windows.System.VirtualKey.Enter)
+            //{
+            //    SiteURLGo_Click(sender, e);
+            //}
         }
 
+        private void txtSitecoreSiteURL_TextChanged(object sender, TextChangedEventArgs e)
+        {
+        }   
     }
 }

@@ -13,7 +13,7 @@ namespace Sitecore_App_Universal.Account
 {
     public class Authentication
     {
-        public async Task<HttpResponseMessage> GetHttpResponse(string sitecoreSiteURL)
+        public async Task<HttpResponseMessage> GetHttpResponse(string sitecoreSiteURL, string UserName, string Password)
         {
             //HttpWebRequest request = new HttpWebRequest();
             //AuthenticationHeaderValue authHeaderUsername = new AuthenticationHeaderValue("X-Scitemwebapi-Username", @"sitecore\admin");
@@ -39,8 +39,8 @@ namespace Sitecore_App_Universal.Account
                     Method = HttpMethod.Get
                 };
 
-                request.Headers.Add("X-Scitemwebapi-Username", @"sitecore\admin");
-                request.Headers.Add("X-Scitemwebapi-Password", "b");
+                request.Headers.Add("X-Scitemwebapi-Username", UserName);
+                request.Headers.Add("X-Scitemwebapi-Password", Password);
 
                 var response = await client.SendAsync(request);
                 if (response.IsSuccessStatusCode)
