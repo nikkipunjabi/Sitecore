@@ -7,14 +7,37 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel x:Name="SP_SiteURL" Orientation="Horizontal" Visibility="Visible"  HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36">Enter Sitecore Site URL:</TextBlock>
-            <TextBox Name="txtSitecoreSiteURL" Height="25" Width="500" KeyDown="txtSitecoreSiteURL_KeyDown"/>
-            <AppBarButton Name="btnGo" Icon="Go" Label="Go" Click="SiteURLGo_Click"/>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/drop_wallpaper.jpg"
+                    Stretch="UniformToFill" />
+        </Grid.Background>
+        <Image x:Name="image" HorizontalAlignment="Left" Source="/Assets/SitecoreLogo.png" Height="147" Margin="401,146,0,0" VerticalAlignment="Top" Width="533" Canvas.ZIndex="5"/>
+        <StackPanel x:Name="SP_SiteURL" Orientation="Horizontal" Visibility="Visible"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="401,346,365,334">
+            <TextBox Name="txtSitecoreSiteURL" Height="25" Width="500" KeyDown="txtSitecoreSiteURL_KeyDown" TextChanged="txtSitecoreSiteURL_TextChanged" PlaceholderText="Enter Website URL"/>
+            <AppBarButton x:Name="btnGo" Icon="Play" Label="Login" Click="SiteURLGo_Click"/>
+        </StackPanel>
+        
+
+        <!--We will convert stack panels to grid in free time-->
+        <!--<Grid Margin="180,335,181,-78">
+            <TextBlock Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,123,493,344">
+        		<Run Text="Enter Fully Qualified User Name:"/>
+            </TextBlock>
+            <TextBox x:Name="txtUserName" Height="25" KeyDown="txtSitecoreSiteURL_KeyDown" Margin="541,123,49,356"/>
+        </Grid>-->
+
+
+
+        <StackPanel x:Name="SP_SiteUserName" Orientation="Horizontal" Visibility="Visible" Margin="401,434,472,302">
+            <TextBox x:Name="txtUserName" Height="25" Width="493" PlaceholderText="Enter User Name"/>
+        </StackPanel>
+        <StackPanel x:Name="SP_Sitepasswd" Orientation="Horizontal" Visibility="Visible" Margin="401,495,472,241">
+            <PasswordBox x:Name="txtPassword" Height="25" Width="495" PlaceholderText="Enter Password"/>
         </StackPanel>
         <StackPanel x:Name="SP_ProgressRing" Visibility="Collapsed" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <ProgressRing Name="ProgressRing" IsActive="True" Height="159" Width="310"></ProgressRing>
         </StackPanel>
+
     </Grid>
 </Page>
